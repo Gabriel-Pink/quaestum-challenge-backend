@@ -36,10 +36,10 @@ export default class JobApplication extends BaseModel {
     courseName: string
     institutionName: string
     graduationDate: string
-  }[]
+  }[] | string
 
   @column()
-  declare skills: string[]
+  declare skills: string[] | string
 
   @column()
   declare status: 'pending' | 'refused' | 'approved'
