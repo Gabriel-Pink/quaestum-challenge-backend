@@ -58,6 +58,8 @@
     "@maximemrf/adonisjs-jwt": "^0.2.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@vinejs/vine": "^3.0.0",
+    "axios": "^1.9.0",
+    "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.6.1",
     "mysql2": "^3.14.1",

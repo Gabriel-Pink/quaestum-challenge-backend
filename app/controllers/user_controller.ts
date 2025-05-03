@@ -12,7 +12,7 @@ export default class UserController {
             return response.badRequest({ message: data.error });
         }
 
-        return response.created({ ...data.user });
+        return response.created({ message: 'User created successfully' });
     }
 
     async signIn({ request, response, auth }: HttpContext) {
@@ -27,6 +27,18 @@ export default class UserController {
         const { token } = data;
 
         return response.ok(token);
+    }
+
+    async resetPassword({ params, request, response }: HttpContext) {
+        const { token } = params;
+        const { newPassword } = request.only(['newPassword']);
+        const data = await UserService.resetPassword(token, newPassword);
+
+        if (!data.success) {
+            return response.badRequest({ message: data.error });
+        }
+
+        return response.ok({ message: 'Password reset successfully' });
     }
 
 }

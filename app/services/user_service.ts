@@ -1,3 +1,4 @@
+import PasswordReset from '#models/password_reset';
 import User from '#models/user';
 import hash from '@adonisjs/core/services/hash';
 
@@ -59,7 +60,7 @@ export default class UserService {
     }: { 
         email: string; 
         password: string;
-        auth: any; // Replace with the correct type for auth
+        auth: any;
     }): Promise<SignInResponse> {
         
         // Validate email and password format using regex
@@ -86,6 +87,26 @@ export default class UserService {
         return { success: true, token };
     }
 
+    static async resetPassword (token: string, newPassword: string): Promise<{ success: boolean; error?: string }> {
+        
+        const passwordReset = await PasswordReset.query()
+            .where('token', token)
+            .first();
 
+        if (!passwordReset) {
+            return { success: false, error: 'Invalid or expired token' };
+        }
+
+        const user = await User.find(passwordReset.userId);
+        if (!user) {
+            return { success: false, error: 'User not found' };
+        }
+        
+        const newPasswordHash = await hash.make(newPassword);
+        user.password = newPasswordHash;
+        await user.save();
+
+        return { success: true };
+    }
 
 }
